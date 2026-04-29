@@ -1,0 +1,81 @@
+version: '3.9'
+
+# ============================================================
+# Gulmi Coffee ERP & CRM — Docker Compose
+# Usage:
+#   Start:   docker compose up -d
+#   Stop:    docker compose down
+#   Logs:    docker compose logs -f
+#   Update:  docker compose pull && docker compose up -d
+# ============================================================
+
+services:
+
+  # ──────────────────────────────────────────────
+  # Main ERP & CRM Application
+  # ──────────────────────────────────────────────
+  gulmi-erp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gulmi-erp
+    restart: unless-stopped
+    ports:
+      - "${ERP_PORT:-80}:80"
+    volumes:
+      # Mount custom nginx config (allows config changes without rebuild)
+      - ./docker/nginx.conf:/etc/nginx/conf.d/gulmi-erp.conf:ro
+      # Mount ERP HTML (allows content updates without rebuild)
+      - ./src/index.html:/usr/share/nginx/html/index.html:ro
+      # Persist nginx logs
+      - gulmi_logs:/var/log/nginx
+    environment:
+      - TZ=Asia/Kathmandu
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - gulmi_net
+    labels:
+      - "com.gulmi.service=erp"
+      - "com.gulmi.version=1.0"
+      - "com.gulmi.description=Gulmi Coffee ERP & CRM"
+
+  # ──────────────────────────────────────────────
+  # Watchtower — Auto-update container on new image
+  # Comment out if you don't want auto-updates
+  # ──────────────────────────────────────────────
+  watchtower:
+    image: containrrr/watchtower
+    container_name: gulmi-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=86400       # Check for updates every 24h
+      - WATCHTOWER_CLEANUP=true               # Remove old images after update
+      - WATCHTOWER_INCLUDE_STOPPED=false
+      - TZ=Asia/Kathmandu
+    command: gulmi-erp
+    networks:
+      - gulmi_net
+    labels:
+      - "com.gulmi.service=watchtower"
+
+# ──────────────────────────────────────────────
+# Named Volumes
+# ──────────────────────────────────────────────
+volumes:
+  gulmi_logs:
+    driver: local
+
+# ──────────────────────────────────────────────
+# Networks
+# ──────────────────────────────────────────────
+networks:
+  gulmi_net:
+    driver: bridge
+    name: gulmi_network
