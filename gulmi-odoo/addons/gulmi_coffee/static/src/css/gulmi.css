@@ -1,0 +1,31 @@
+/* Gulmi Coffee — Odoo Backend Branding */
+:root {
+    --gulmi-dark:   #2C1A0E;
+    --gulmi-mid:    #5C3317;
+    --gulmi-warm:   #8B5E3C;
+    --gulmi-light:  #C4956A;
+    --gulmi-cream:  #F5ECD7;
+}
+
+.o_main_navbar {
+    background-color: var(--gulmi-dark) !important;
+}
+
+.o_menu_brand {
+    color: var(--gulmi-cream) !important;
+    font-family: 'Georgia', serif !important;
+}
+
+.o_form_view .o_form_sheet {
+    border-top: 3px solid var(--gulmi-light);
+}
+
+/* Positive net profit — green row */
+.o_data_row.o_decoration_success td {
+    background-color: #f0fdf4 !important;
+}
+
+/* Negative net profit — red row */
+.o_data_row.o_decoration_danger td {
+    background-color: #fef2f2 !important;
+}

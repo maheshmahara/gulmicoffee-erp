@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="stage_fresh"     model="gulmi.coffee.stage"><field name="code">FRESH</field><field name="name">Fresh Cherry</field><field name="sequence">1</field></record>
+    <record id="stage_dry"       model="gulmi.coffee.stage"><field name="code">DRY</field><field name="name">Dry Cherry</field><field name="sequence">2</field></record>
+    <record id="stage_parchment" model="gulmi.coffee.stage"><field name="code">PARCHMENT</field><field name="name">Parchment Bean</field><field name="sequence">3</field></record>
+    <record id="stage_green"     model="gulmi.coffee.stage"><field name="code">GREEN</field><field name="name">Green Bean</field><field name="sequence">4</field></record>
+    <record id="stage_roasted"   model="gulmi.coffee.stage"><field name="code">ROASTED</field><field name="name">Roasted Bean</field><field name="sequence">5</field></record>
+  </data>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <!-- Fresh Cherry — Rs500/kg, yield 0.50 → parchment, cups/kg=50 -->
+    <record id="costing_fresh" model="gulmi.coffee.costing">
+      <field name="source">Fresh Cherry</field>
+      <field name="input_qty_kg">1</field>
+      <field name="purchase_price">500</field>
+      <field name="stage_yield">0.50</field>
+      <field name="green_to_roasted_yield">0.85</field>
+      <field name="cups_per_kg">50</field>
+      <field name="transport_rate">30</field>
+      <field name="processing_rate">20</field>
+      <field name="hulling_electricity_rate">25</field>
+      <field name="hulling_labour_rate">10</field>
+      <field name="roasting_electricity_rate">25</field>
+      <field name="roasting_labour_rate">10</field>
+      <field name="packaging_rate">60</field>
+      <field name="cup_selling_price">130</field>
+      <field name="cafe_variable_per_cup">30</field>
+      <field name="annual_fixed_cost">416000</field>
+    </record>
+    <!-- Dry Cherry — Rs400/kg, yield 0.80 → green -->
+    <record id="costing_dry" model="gulmi.coffee.costing">
+      <field name="source">Dry Cherry</field>
+      <field name="input_qty_kg">100</field>
+      <field name="purchase_price">400</field>
+      <field name="stage_yield">0.80</field>
+      <field name="green_to_roasted_yield">0.85</field>
+      <field name="cups_per_kg">50</field>
+      <field name="transport_rate">30</field>
+      <field name="processing_rate">10</field>
+      <field name="hulling_electricity_rate">0</field>
+      <field name="hulling_labour_rate">0</field>
+      <field name="roasting_electricity_rate">25</field>
+      <field name="roasting_labour_rate">10</field>
+      <field name="packaging_rate">60</field>
+      <field name="cup_selling_price">130</field>
+      <field name="cafe_variable_per_cup">30</field>
+      <field name="annual_fixed_cost">416000</field>
+    </record>
+    <!-- Parchment — Rs830/kg, yield 0.75 → green -->
+    <record id="costing_parchment" model="gulmi.coffee.costing">
+      <field name="source">Parchment</field>
+      <field name="input_qty_kg">300</field>
+      <field name="purchase_price">830</field>
+      <field name="stage_yield">0.75</field>
+      <field name="green_to_roasted_yield">0.85</field>
+      <field name="cups_per_kg">50</field>
+      <field name="transport_rate">30</field>
+      <field name="processing_rate">0</field>
+      <field name="hulling_electricity_rate">25</field>
+      <field name="hulling_labour_rate">10</field>
+      <field name="roasting_electricity_rate">25</field>
+      <field name="roasting_labour_rate">10</field>
+      <field name="packaging_rate">60</field>
+      <field name="cup_selling_price">130</field>
+      <field name="cafe_variable_per_cup">30</field>
+      <field name="annual_fixed_cost">416000</field>
+    </record>
+    <!-- Green Beans — Rs1900/kg, straight to roasting -->
+    <record id="costing_green" model="gulmi.coffee.costing">
+      <field name="source">Green Beans</field>
+      <field name="input_qty_kg">500</field>
+      <field name="purchase_price">1900</field>
+      <field name="stage_yield">1.0</field>
+      <field name="green_to_roasted_yield">0.85</field>
+      <field name="cups_per_kg">50</field>
+      <field name="transport_rate">30</field>
+      <field name="processing_rate">0</field>
+      <field name="hulling_electricity_rate">0</field>
+      <field name="hulling_labour_rate">0</field>
+      <field name="roasting_electricity_rate">25</field>
+      <field name="roasting_labour_rate">10</field>
+      <field name="packaging_rate">60</field>
+      <field name="cup_selling_price">130</field>
+      <field name="cafe_variable_per_cup">30</field>
+      <field name="annual_fixed_cost">416000</field>
+    </record>
+  </data>
+</odoo>

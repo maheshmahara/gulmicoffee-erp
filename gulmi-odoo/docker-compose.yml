@@ -1,0 +1,105 @@
+services:
+
+  # ─────────────────────────────────────────────
+  # PostgreSQL 15 — Odoo Database
+  # ─────────────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    container_name: gulmi-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gulmi_erp
+      POSTGRES_USER: gulmi
+      POSTGRES_PASSWORD: GulmiCoffee@2025!
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - gulmi_db_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - gulmi_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gulmi -d gulmi_erp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────────
+  # Odoo 17 Community — Full ERP
+  # ─────────────────────────────────────────────
+  odoo:
+    image: odoo:17.0
+    container_name: gulmi-odoo
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      PORT: 5432
+      USER: gulmi
+      PASSWORD: GulmiCoffee@2025!
+    volumes:
+      - ./odoo-conf/odoo.conf:/etc/odoo/odoo.conf:ro
+      - ./addons:/mnt/extra-addons
+      - gulmi_odoo_data:/var/lib/odoo
+    ports:
+      - "8069:8069"
+    networks:
+      - gulmi_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8069/web/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ─────────────────────────────────────────────
+  # Gulmi Custom ERP Frontend (your existing app)
+  # ─────────────────────────────────────────────
+  gulmi-erp:
+    build:
+      context: ../gulmi-coffee-erp
+      dockerfile: Dockerfile
+    container_name: gulmi-frontend
+    restart: unless-stopped
+    volumes:
+      - ../gulmi-coffee-erp/src/index.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - gulmi_net
+
+  # ─────────────────────────────────────────────
+  # Nginx Reverse Proxy — Routes all traffic
+  # ─────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: gulmi-proxy
+    restart: unless-stopped
+    depends_on:
+      - odoo
+      - gulmi-erp
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - gulmi_net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# ─────────────────────────────────────────────
+# Volumes
+# ─────────────────────────────────────────────
+volumes:
+  gulmi_db_data:
+  gulmi_odoo_data:
+
+# ─────────────────────────────────────────────
+# Network
+# ─────────────────────────────────────────────
+networks:
+  gulmi_net:
+    driver: bridge
+    name: gulmi_odoo_network

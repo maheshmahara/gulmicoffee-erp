@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ── Coffee Costing Tree View ─────────────────────────── -->
+  <record id="view_coffee_costing_tree" model="ir.ui.view">
+    <field name="name">gulmi.coffee.costing.tree</field>
+    <field name="model">gulmi.coffee.costing</field>
+    <field name="arch" type="xml">
+      <tree string="Coffee Costing by Source" decoration-success="net_profit > 0" decoration-danger="net_profit &lt; 0">
+        <field name="source"/>
+        <field name="input_qty_kg"/>
+        <field name="roasted_output_kg" widget="float" digits="[12,3]"/>
+        <field name="cups_produced" widget="float" digits="[12,0]"/>
+        <field name="cost_per_roasted_kg" widget="monetary" options="{'currency_field': False}"/>
+        <field name="coffee_cost_per_cup" widget="float" digits="[10,2]"/>
+        <field name="cup_sales_revenue" widget="float" digits="[14,0]"/>
+        <field name="net_profit" widget="float" digits="[14,0]"/>
+        <field name="net_margin_pct" widget="float" digits="[8,2]" string="Margin %"/>
+        <field name="breakeven_cups_per_day" widget="float" digits="[10,1]"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- ── Coffee Costing Form View ─────────────────────────── -->
+  <record id="view_coffee_costing_form" model="ir.ui.view">
+    <field name="name">gulmi.coffee.costing.form</field>
+    <field name="model">gulmi.coffee.costing</field>
+    <field name="arch" type="xml">
+      <form string="Coffee Costing Model">
+        <sheet>
+          <div class="oe_title">
+            <h1><field name="source" widget="selection"/></h1>
+          </div>
+          <group string="Procurement Inputs">
+            <group>
+              <field name="input_qty_kg" string="Input Quantity (kg)"/>
+              <field name="purchase_price" string="Purchase Price (Rs/kg)"/>
+              <field name="stage_yield" string="Stage Yield (0-1)"/>
+              <field name="green_to_roasted_yield" string="Green→Roasted Yield"/>
+              <field name="cups_per_kg" string="Cups per kg Roasted"/>
+            </group>
+            <group string="Processing Rates (Rs/kg)">
+              <field name="transport_rate"/>
+              <field name="processing_rate"/>
+              <field name="hulling_electricity_rate"/>
+              <field name="hulling_labour_rate"/>
+              <field name="roasting_electricity_rate"/>
+              <field name="roasting_labour_rate"/>
+              <field name="packaging_rate"/>
+            </group>
+          </group>
+
+          <group string="Cost Bridge to Roasted Kg &amp; Cup">
+            <group>
+              <field name="procurement_cost" string="Procurement Cost (Rs)" readonly="1"/>
+              <field name="transport_cost" string="Transport Cost (Rs)" readonly="1"/>
+              <field name="processing_cost" string="Processing Cost (Rs)" readonly="1"/>
+              <field name="hulling_cost" string="Hulling Cost (Rs)" readonly="1"/>
+              <field name="roasting_cost" string="Roasting Cost (Rs)" readonly="1"/>
+              <field name="packaging_cost" string="Packaging Cost (Rs)" readonly="1"/>
+              <field name="total_variable_cost" string="Total Variable Cost (Rs)" readonly="1"/>
+            </group>
+            <group>
+              <field name="roasted_output_kg" string="Roasted Output (kg)" readonly="1"/>
+              <field name="cups_produced" string="Cups Produced" readonly="1"/>
+              <field name="cost_per_roasted_kg" string="Cost per Roasted kg" readonly="1"/>
+              <field name="coffee_cost_per_cup" string="Coffee Cost per Cup" readonly="1"/>
+            </group>
+          </group>
+
+          <group string="P&amp;L — Annual Café Economics">
+            <group>
+              <field name="cup_selling_price" string="Cup Selling Price (Rs)"/>
+              <field name="cafe_variable_per_cup" string="Café Variable Cost/Cup (Rs)"/>
+              <field name="annual_fixed_cost" string="Annual Fixed Cost (Rs)"/>
+            </group>
+            <group>
+              <field name="cup_sales_revenue" string="Cup Sales Revenue (Rs)" readonly="1"/>
+              <field name="contribution_before_fixed" string="Contribution before Fixed (Rs)" readonly="1"/>
+              <field name="net_profit" string="Net Profit (Rs)" readonly="1"/>
+              <field name="net_margin_pct" string="Net Margin %" readonly="1"/>
+              <field name="breakeven_cups_per_day" string="Breakeven Cups/Day" readonly="1"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ── Coffee Stages Tree ────────────────────────────────── -->
+  <record id="view_coffee_stage_tree" model="ir.ui.view">
+    <field name="name">gulmi.coffee.stage.tree</field>
+    <field name="model">gulmi.coffee.stage</field>
+    <field name="arch" type="xml">
+      <tree string="Coffee Processing Stages">
+        <field name="sequence" widget="handle"/>
+        <field name="code"/>
+        <field name="name"/>
+        <field name="description"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- ── Actions ───────────────────────────────────────────── -->
+  <record id="action_coffee_costing" model="ir.actions.act_window">
+    <field name="name">Coffee Costing by Source</field>
+    <field name="res_model">gulmi.coffee.costing</field>
+    <field name="view_mode">tree,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        No costing records yet. Create one for each procurement source.
+      </p>
+    </field>
+  </record>
+
+  <record id="action_coffee_stages" model="ir.actions.act_window">
+    <field name="name">Coffee Processing Stages</field>
+    <field name="res_model">gulmi.coffee.stage</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+</odoo>

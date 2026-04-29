@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_coffee_stage,Coffee Stage,model_gulmi_coffee_stage,base.group_user,1,0,0,0
+access_coffee_stage_manager,Coffee Stage Manager,model_gulmi_coffee_stage,base.group_system,1,1,1,1
+access_coffee_costing,Coffee Costing,model_gulmi_coffee_costing,base.group_user,1,0,0,0
+access_coffee_costing_manager,Coffee Costing Manager,model_gulmi_coffee_costing,base.group_system,1,1,1,1
